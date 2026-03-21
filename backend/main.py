@@ -11,10 +11,19 @@ class PromptRequest(BaseModel):
     prompt: str
 
 
+import time
+from datetime import datetime
+
+START_TIME = time.time()
+
 @app.get("/health")
 def health_check():
-    return {"status": "ok"}
-
+    return {
+        "status": "ok",
+        "model": "gpt-4o-mini",
+        "uptime_seconds": round(time.time() - START_TIME, 2),
+        "timestamp": datetime.utcnow().isoformat() + "Z"
+    }
 
 @app.post("/secure-query")
 def secure_query(request: PromptRequest):
