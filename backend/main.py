@@ -36,12 +36,9 @@ async def global_exception_handler(request, exc):
 @app.post("/secure-query")
 def secure_query(request: PromptRequest):
     prompt = (request.prompt or "").strip()
-
     analysis = analyze_prompt(prompt)
-    decision = analysis["decision"]
 
-    vulnerable_response = None
-
+<<<<<<< Updated upstream
     if not prompt:
         return {
             "status": "allowed",
@@ -59,22 +56,25 @@ def secure_query(request: PromptRequest):
             "vulnerable_preview": None,
         }
 
+=======
+    vulnerable_preview = None
+>>>>>>> Stashed changes
     if prompt:
         try:
-            vulnerable_response = vulnerable_llm(prompt)
+            vulnerable_preview = vulnerable_llm(prompt)
         except Exception:
-            vulnerable_response = "Vulnerable model response unavailable."
+            vulnerable_preview = "Preview unavailable."
 
-    if decision == "BLOCK":
+    if analysis["decision"] == "BLOCK":
         return {
             "status": "blocked",
             "analysis": analysis,
-            "vulnerable_preview": vulnerable_response
+            "vulnerable_preview": vulnerable_preview
         }
 
     return {
         "status": "allowed",
         "analysis": analysis,
-        "llm_response": vulnerable_response,
-        "vulnerable_preview": vulnerable_response
+        "llm_response": vulnerable_preview,
+        "vulnerable_preview": vulnerable_preview
     }
