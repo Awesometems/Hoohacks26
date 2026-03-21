@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 from analyzer import analyze_prompt
 from simulator import vulnerable_llm
-from config import MODEL_NAME, FALLBACK_MODE
 
 app = FastAPI(title="PromptShield AI Firewall")
 
@@ -22,7 +21,7 @@ START_TIME = time.time()
 def health_check():
     return {
         "status": "ok",
-        "model": MODEL_NAME if not FALLBACK_MODE else "fallback-mode",
+        "model": "gpt-4o-mini",
         "uptime_seconds": round(time.time() - START_TIME, 2),
         "timestamp": datetime.utcnow().isoformat() + "Z"
     }
@@ -38,62 +37,24 @@ async def global_exception_handler(request, exc):
 def secure_query(request: PromptRequest):
     prompt = (request.prompt or "").strip()
     analysis = analyze_prompt(prompt)
-<<<<<<< HEAD
 
-<<<<<<< Updated upstream
-    if not prompt:
-        return {
-            "status": "allowed",
-            "decision": "ALLOW",
-            "analysis": {
-                "risk_score": 0,
-                "decision": "ALLOW",
-                "patterns_detected": [],
-                "attack_types": [],
-                "explanation": "Empty prompt — nothing to analyze.",
-                "safe_prompt": "",
-                "highlighted_attacks": []
-            },
-            "llm_response": None,
-            "vulnerable_preview": None,
-        }
-
-=======
     vulnerable_preview = None
->>>>>>> Stashed changes
-=======
-    decision = analysis["decision"]
-
-    vulnerable_response = None
->>>>>>> 28e035b1b3a412c00099a5677c387de083d3bae8
     if prompt:
         try:
             vulnerable_preview = vulnerable_llm(prompt)
         except Exception:
             vulnerable_preview = "Preview unavailable."
 
-<<<<<<< HEAD
     if analysis["decision"] == "BLOCK":
         return {
             "status": "blocked",
             "analysis": analysis,
             "vulnerable_preview": vulnerable_preview
         }
-=======
-    is_safe = decision == "ALLOW" and analysis["risk_score"] == 0
->>>>>>> 28e035b1b3a412c00099a5677c387de083d3bae8
 
     return {
-        "status": "blocked" if decision == "BLOCK" else "allowed",
-        "safe": is_safe,
-        "safety_message": "✅ Prompt is clean — no threats detected." if is_safe else None,
-        "decision": decision,
+        "status": "allowed",
         "analysis": analysis,
-<<<<<<< HEAD
         "llm_response": vulnerable_preview,
         "vulnerable_preview": vulnerable_preview
-=======
-        "llm_response": None if decision == "BLOCK" else vulnerable_response,
-        "vulnerable_preview": vulnerable_response,
->>>>>>> 28e035b1b3a412c00099a5677c387de083d3bae8
     }
