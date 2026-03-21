@@ -2,7 +2,7 @@ import json
 
 from patterns import patterns
 from scorer import calculate_risk
-from config import client, MODEL_NAME
+from config import client, MODEL_NAME, FALLBACK_MODE
 
 
 # Severity and reason codes per pattern category
@@ -47,9 +47,17 @@ def llm_security_analysis(prompt):
     """
     Uses an LLM to classify the prompt and return structured JSON.
     """
+    if FALLBACK_MODE:
+        return {
+            "risk_score": 50,
+            "attack_types": ["unknown"],
+            "explanation": "Running in fallback mode — no API key configured.",
+            "safe_prompt": "Rewrite the prompt in a safe educational context."
+        }
     try:
         response = client.chat.completions.create(
             model=MODEL_NAME,
+            timeout=10,
             response_format={"type": "json_object"},
             messages=[
                 {

@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from analyzer import analyze_prompt
@@ -25,6 +26,13 @@ def health_check():
         "timestamp": datetime.utcnow().isoformat() + "Z"
     }
 
+@app.exception_handler(Exception)
+async def global_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=500,
+        content={"error": "Internal server error", "detail": str(exc)}
+    )
+
 @app.post("/secure-query")
 def secure_query(request: PromptRequest):
     prompt = (request.prompt or "").strip()
@@ -33,6 +41,23 @@ def secure_query(request: PromptRequest):
     decision = analysis["decision"]
 
     vulnerable_response = None
+
+    if not prompt:
+        return {
+            "status": "allowed",
+            "decision": "ALLOW",
+            "analysis": {
+                "risk_score": 0,
+                "decision": "ALLOW",
+                "patterns_detected": [],
+                "attack_types": [],
+                "explanation": "Empty prompt — nothing to analyze.",
+                "safe_prompt": "",
+                "highlighted_attacks": []
+            },
+            "llm_response": None,
+            "vulnerable_preview": None,
+        }
 
     if prompt:
         try:
