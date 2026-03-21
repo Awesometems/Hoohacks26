@@ -2,12 +2,16 @@ def calculate_risk(rule_hits, llm_score, llm_confidence):
     try:
         score = int(llm_score)
     except (TypeError, ValueError):
+<<<<<<< HEAD
         score = 45
 
     try:
         confidence = float(llm_confidence)
     except (TypeError, ValueError):
         confidence = 0.5
+=======
+        score = 0
+>>>>>>> 28e035b1b3a412c00099a5677c387de083d3bae8
 
     score = max(0, min(score, 100))
     confidence = max(0.0, min(confidence, 1.0))
