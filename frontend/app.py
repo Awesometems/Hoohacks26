@@ -606,10 +606,6 @@ if analyze_clicked:
         st.write("**Recommendation**")
         st.write(analysis["recommendation"])
 
-        st.write("**Safe Rewrite**")
-        st.code(analysis["safe_prompt"] or "No rewrite generated.")
-        st.markdown('</div>', unsafe_allow_html=True)
-
     st.markdown('<div class="section-label">Vulnerable vs Protected</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-title">See what PromptShield prevented</div>', unsafe_allow_html=True)
 
