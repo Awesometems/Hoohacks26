@@ -2,9 +2,6 @@ from config import client, MODEL_NAME
 
 
 def vulnerable_llm(prompt):
-    """
-    Simulates a vulnerable assistant that directly answers the user's prompt.
-    """
     response = client.chat.completions.create(
         model=MODEL_NAME,
         timeout=10,
@@ -13,5 +10,4 @@ def vulnerable_llm(prompt):
             {"role": "user", "content": prompt}
         ]
     )
-
     return response.choices[0].message.content
