@@ -7,11 +7,13 @@ from config import client, MODEL_NAME, FALLBACK_MODE
 
 # Severity and reason codes per pattern category
 PATTERN_META = {
-    "instruction_override": {"severity": 40, "reason_code": "INSTR_OVERRIDE"},
-    "data_exfiltration":    {"severity": 45, "reason_code": "DATA_EXFIL"},
-    "role_manipulation":    {"severity": 30, "reason_code": "ROLE_MANIP"},
-    "safety_bypass":        {"severity": 20, "reason_code": "SAFETY_BYPASS"},
-    "jailbreak":            {"severity": 40, "reason_code": "JAILBREAK"},
+    "instruction_override":    {"severity": 40, "reason_code": "INSTR_OVERRIDE"},
+    "system_prompt_extraction": {"severity": 45, "reason_code": "SYS_PROMPT_EXTRACT"},
+    "role_hijacking":          {"severity": 35, "reason_code": "ROLE_HIJACK"},
+    "safety_evasion":          {"severity": 25, "reason_code": "SAFETY_EVASION"},
+    "data_exfiltration":       {"severity": 45, "reason_code": "DATA_EXFIL"},
+    "policy_bypass":           {"severity": 40, "reason_code": "POLICY_BYPASS"},
+    "covert_phrasing":         {"severity": 30, "reason_code": "COVERT_PHRASING"},
 }
 
 
