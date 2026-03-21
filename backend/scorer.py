@@ -2,7 +2,7 @@ def calculate_risk(patterns_detected, llm_score):
     try:
         score = int(llm_score)
     except (TypeError, ValueError):
-        score = 50
+        score = 0
 
     score = max(0, min(score, 100))
 

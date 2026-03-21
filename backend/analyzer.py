@@ -17,11 +17,9 @@ PATTERN_META = {
 }
 
 
+import re
+
 def detect_patterns(prompt):
-    """
-    Detects attack categories and returns structured rule hits.
-    Each hit includes pattern text, attack_type, severity, and reason_code.
-    """
     seen_categories = set()
     rule_hits = []
     lowered = prompt.lower()
@@ -29,10 +27,10 @@ def detect_patterns(prompt):
     for category, rules in patterns.items():
         meta = PATTERN_META.get(category, {"severity": 10, "reason_code": "UNKNOWN"})
         for rule in rules:
-            start = lowered.find(rule)
-            if start != -1:
+            match = re.search(r'\b' + re.escape(rule) + r'\b', lowered)
+            if match:
                 rule_hits.append({
-                    "pattern": prompt[start:start + len(rule)],
+                    "pattern": prompt[match.start():match.start() + len(rule)],
                     "attack_type": category,
                     "severity": meta["severity"],
                     "reason_code": meta["reason_code"],
@@ -41,7 +39,6 @@ def detect_patterns(prompt):
 
     detected_categories = sorted(list(seen_categories))
     reason_codes = sorted(list({h["reason_code"] for h in rule_hits}))
-
     return detected_categories, rule_hits, reason_codes
 
 
@@ -102,7 +99,7 @@ Return ONLY valid JSON with these keys:
 
     except Exception:
         return {
-            "risk_score":     50,
+            "risk_score":     0,
             "confidence":     0.5,
             "attack_types":   ["unknown"],
             "explanation":    "Fallback analysis used because structured LLM analysis failed.",
