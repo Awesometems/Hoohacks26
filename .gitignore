@@ -2,3 +2,4 @@
 __pycache__/
 .env
 requirements_local.txt
+backend/config.py
