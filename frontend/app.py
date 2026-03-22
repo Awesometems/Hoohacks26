@@ -606,32 +606,7 @@ if analyze_clicked:
         st.write("**Recommendation**")
         st.write(analysis["recommendation"])
 
-    st.markdown('<div class="section-label">Vulnerable vs Protected</div>', unsafe_allow_html=True)
-    st.markdown('<div class="section-title">See what PromptShield prevented</div>', unsafe_allow_html=True)
-
-    c1, c2 = st.columns(2)
-
-    with c1:
-        st.markdown("""
-        <div class="compare-card">
-            <div class="compare-title">Without PromptShield</div>
-            <div class="compare-subtle">What a vulnerable model might do if the request were forwarded directly.</div>
-        """, unsafe_allow_html=True)
-        st.write(data.get("vulnerable_preview", "No preview available."))
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    with c2:
-        st.markdown("""
-        <div class="compare-card">
-            <div class="compare-title">With PromptShield Enforcement</div>
-            <div class="compare-subtle">The firewall decision after rule matching, scoring, and classifier review.</div>
-        """, unsafe_allow_html=True)
-        if data["status"] == "blocked":
-            st.error("Request blocked before reaching the vulnerable model.")
-        else:
-            st.success("Request allowed after security analysis.")
-            st.write(data.get("llm_response", "No response available."))
-        st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown('<div class="section-label">Vulnera  ble vs Protected</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="section-label">Security Pipeline</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Decision trace</div>', unsafe_allow_html=True)
