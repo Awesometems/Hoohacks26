@@ -1,7 +1,8 @@
 import requests
 import streamlit as st
 
-API_URL = "http://127.0.0.1:8000"
+import os
+API_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000")
 
 st.set_page_config(
     page_title="PromptShield",
@@ -605,8 +606,6 @@ if analyze_clicked:
 
         st.write("**Recommendation**")
         st.write(analysis["recommendation"])
-
-    st.markdown('<div class="section-label">Vulnera  ble vs Protected</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="section-label">Security Pipeline</div>', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Decision trace</div>', unsafe_allow_html=True)
