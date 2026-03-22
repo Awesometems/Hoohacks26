@@ -1,0 +1,8 @@
+README.md
+setup.py
+promptshield/__init__.py
+promptshieldhoohacks.egg-info/PKG-INFO
+promptshieldhoohacks.egg-info/SOURCES.txt
+promptshieldhoohacks.egg-info/dependency_links.txt
+promptshieldhoohacks.egg-info/requires.txt
+promptshieldhoohacks.egg-info/top_level.txt
